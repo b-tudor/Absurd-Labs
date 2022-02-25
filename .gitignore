@@ -88,3 +88,7 @@
 /VisualStudio/.vs/Absurdle/v17/ipch/AutoPCH/b374ad92b78da1a5/ABSURDLE.ipch
 /VisualStudio/.vs/Absurdle/v17/ipch/AutoPCH/9abe7ece1cd3dbaf/WORD.ipch
 /output.txt
+/output-2.txt
+/VisualStudio/x64/Release/Absurdle.tlog/CL.write.1.tlog
+/VisualStudio/x64/Release/Absurdle.tlog/CL.read.1.tlog
+/VisualStudio/x64/Debug/absurdle.obj.enc

@@ -13,6 +13,7 @@ private:
 public:
 	Word(std::string);
 	char char_at(int i);
+	bool equals(const char test[6]);
 	int interrogate( Word testee );
 	void output();
 	void set_avg(double a) { avg = (float)a; };

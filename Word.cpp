@@ -19,21 +19,62 @@ char Word::char_at(int i) {
 	return letter[i];
 }
 
+bool Word::equals(const char test[6]) {
+	for (int i = 0; i < 5; i++)
+		if (this->char_at(i) != test[i])
+			return false;
+
+	if (test[5])
+		return false;
+
+	return true;
+}
+
+
+
+
+void Word::output() {
+	
+	for (int i = 0; i < 5; i++)
+		std::cout << letter[i];
+}
+
+
+
+
+
+
+
 
 
 int Word::interrogate(Word testee) {
 
-	char results[5] = {0,0,0,0,0};
+	char results[5] = { 0,0,0,0,0 };
+	
+	// Check for correct letters in the correct position first
+	for (int i = 0; i < 5; i++) {
+		if(this->letter[i]==testee.letter[i]) {
+			results[i] = 2;
+			// If we find a good letter, delete it so that it is not eligible
+			// to be matched when checking for good letters in incorrect positions.
+			testee.letter[i] = '.';
+		}
+	}
+
 
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; j++) {
-			if( this->letter[i] == testee.letter[j] ) {
-				if (i == j) {
-					results[i] = 2;
-					break;
-				}
-				else
-					results[i] = 1;
+
+			// We already checked this case (good letter in correct position)
+			if (i == j)
+				continue;
+
+			if (this->letter[i] == testee.letter[j]) {
+				results[i] = 1;
+				// Get rid of this match so it is not double counted
+				testee.letter[j] = '.';
+				break;
+				
 			}
 		}
 	}
@@ -45,11 +86,4 @@ int Word::interrogate(Word testee) {
 	}
 
 	return index;
- }
-
-void Word::output() {
-	
-	for (int i = 0; i < 5; i++)
-		std::cout << letter[i];
 }
-
