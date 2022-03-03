@@ -1,7 +1,7 @@
 #include "Word.h"
-#include <iostream>
 
-Word::Word(std::string candidate) {
+
+Word::Word(std::string candidate) : std_dev(0), avg(0), min(0), min_qty(0) {
 	if (candidate.length() != 5) {
 		letter[0] = (char)0;
 		return;
@@ -15,9 +15,7 @@ Word::Word(std::string candidate) {
 	min_qty = -1;
 }
 
-char Word::char_at(int i) {
-	return letter[i];
-}
+
 
 bool Word::equals(const char test[6]) {
 	for (int i = 0; i < 5; i++)
@@ -29,18 +27,6 @@ bool Word::equals(const char test[6]) {
 
 	return true;
 }
-
-
-
-
-void Word::output() {
-	
-	for (int i = 0; i < 5; i++)
-		std::cout << letter[i];
-}
-
-
-
 
 
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <iostream>
 
 class Word
 {
@@ -12,10 +13,9 @@ private:
 
 public:
 	Word(std::string);
-	char char_at(int i);
+	char char_at(int i) const { return letter[i]; };
 	bool equals(const char test[6]);
 	int interrogate( Word testee );
-	void output();
 	void set_avg(double a) { avg = (float)a; };
 	double Avg() { return (double)avg; }
 	void set_sd(double s) { std_dev = (float)s; }
@@ -44,5 +44,12 @@ public:
 
 		return std::string(result);
 	};
+
+	friend std::ostream& operator << (std::ostream& out, const Word w) {
+		out << w.char_at(0) << w.char_at(1) << w.char_at(2) << w.char_at(3) << w.char_at(4);
+		return out;
+	};
 };
+
+
 

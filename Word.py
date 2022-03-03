@@ -1,0 +1,1 @@
+# Python version of the Absurdle C++ Word class
