@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <cmath>
 #include "Word.h"
 
 int main()
