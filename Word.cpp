@@ -49,6 +49,12 @@ int Word::compute_match_type(Word testee) {
 
 
 	for (int i = 0; i < 5; i++) {
+
+		// If we have a value in this position already, then this letter
+		// has already been 'consumed'. 
+		if (results[i] > 0)
+			continue;
+
 		for (int j = 0; j < 5; j++) {
 
 			// We already checked this case (good letter in correct position)
