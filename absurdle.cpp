@@ -54,7 +54,7 @@ int main()
 
         int freq_counts[245] = { 0 };
         for (Word &commoners : word_list_common) {
-            freq_counts[words.interrogate(commoners)] ++;
+            freq_counts[words.compute_match_type(commoners)] ++;
         }
         
         // Compute average for each word
@@ -75,8 +75,8 @@ int main()
         words.set_sd(sd);
 
         
-        for (int i = 0; i < 243; i++) {
-            if(words.equals("ROATE") || words.equals("IMMIX")) {
+        if(words.equals("ROATE") || words.equals("IMMIX")) {
+			for (int i = 0; i < 243; i++) {
                 if (freq_counts[i]) {
                     std::cout << words << "[" << Word::index_interpret(i) << "]: " << freq_counts[i] << "\n";
                 }

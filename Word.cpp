@@ -33,7 +33,7 @@ bool Word::equals(const char test[6]) {
 
 
 
-int Word::interrogate(Word testee) {
+int Word::compute_match_type(Word testee) {
 
 	char results[5] = { 0,0,0,0,0 };
 	
@@ -72,4 +72,16 @@ int Word::interrogate(Word testee) {
 	}
 
 	return index;
+}
+
+
+
+bool Word::operator==(const Word& w) {
+	for (int i = 0; i < 5; i++)
+		if ((this->letter[i] | 0x10) != (w.letter[i] | 0x10))
+			return false;
+	return true;
+}
+bool Word::operator!=(const Word& w) {
+	return !(*this == w);
 }
