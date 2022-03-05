@@ -15,7 +15,7 @@ public:
 	Word(std::string);
 	char char_at(int i) const { return letter[i]; };
 	bool equals(const char test[6]);
-	int compute_match_type (Word testee);
+	int compute_match_code (Word testee);
 	void set_avg(double a) { avg = (float)a; };
 	double Avg() { return (double)avg; }
 	void set_sd(double s) { std_dev = (float)s; }
@@ -23,7 +23,7 @@ public:
 	bool operator==(const Word& w);
 	bool operator!=(const Word& w);
 
-	static std::string index_interpret(int i) {
+	static std::string render_match_code(int i) {
 		char result[6] = { 0 };
 		int powers_of_3[5] = { 81, 27, 9, 3, 1 };
 

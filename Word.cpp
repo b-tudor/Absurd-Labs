@@ -10,10 +10,6 @@ Word::Word(std::string candidate) : std_dev(0), avg(0), min(0), min_qty(0) {
 
 	for( int i=0; i<5; i++ )
 		letter[i] = candidate.c_str()[i];
-	std_dev =  0;
-	avg     = -1;
-	min     = -1;
-	min_qty = -1;
 }
 
 bool Word::equals(const char test[6]) {
@@ -28,7 +24,7 @@ bool Word::equals(const char test[6]) {
 }
 
 
-int Word::compute_match_type(Word testee) {
+int Word::compute_match_code(Word testee) {
 	char results[5] = { 0,0,0,0,0 };
 	// Check for correct letters in the correct position first
 	for (int i = 0; i < 5; i++) {
@@ -44,7 +40,7 @@ int Word::compute_match_type(Word testee) {
 	for (int i = 0; i < 5; i++) {
 
 		// If we have a value in this position already, then this letter
-		// has already been 'consumed'. 
+		// has already been 'consumed'.
 		if (results[i] > 0)
 			continue;
 

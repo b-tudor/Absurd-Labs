@@ -14,7 +14,6 @@ int main()
 {
     std::vector<Word> word_list_complete;
     std::vector<Word> word_list_common;
-    std::vector<Word> word_list_compromised[243];
 
     // Read Complete word list from file
     std::ifstream infile("absurdle-list-COMPLETE.txt");
@@ -37,10 +36,13 @@ int main()
     
     
     for (Word &words : word_list_complete) {
+
+        std::vector<Word> word_list_compromised[243];
+
         int freq_counts[245] = { 0 };
         for (Word &commoners : word_list_common) {
 
-            int index = words.compute_match_type(commoners);
+            int index = words.compute_match_code(commoners);
             word_list_compromised[index].push_back(commoners);  
             freq_counts[index]++;
         }
@@ -64,21 +66,30 @@ int main()
 
         
 
-       // if(words.equals("AROSE")) {
+        // if(words.equals("AROSE")) {
 			for (int i = 0; i < 243; i++) {
 
                 if (freq_counts[i]) {
-                    std::cout << words << "[" << Word::index_interpret(i) << "]: " << freq_counts[i] << "\n";
+                    std::cout << words << "[" << Word::render_match_code(i) << "]: " << freq_counts[i] << "\n";
                     if(word_list_compromised[i].size() == 1){
-                    // Traversing of vectors word_list_compromised to print
-                    std::cout << "Words at index " << i << ": ";
-                    for (auto matched = word_list_compromised[i].begin(); matched != word_list_compromised[i].end(); matched++) {
-                        std::cout << *matched << ' ';
+                        // Traversing of vectors word_list_compromised to print
+                        std::cout << "Words at index " << i << ": ";
+                        for( auto &matched : word_list_compromised[i]) {
+                            std::cout << matched << ' ';
                         }
-                    std::cout << "\n";
+                        std::cout << "\n";
                     }
                 }
-        }
+            }
     }
+
+
+    for (Word& words : word_list_complete) {
+        std::cout << std::fixed << std::setprecision(2);
+        if (words.sd() < 25.0)
+            std::cout << words << " ... " << words.sd() << "\n";
+    }
+
+
   
 }
