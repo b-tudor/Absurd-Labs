@@ -15,7 +15,7 @@ public:
 	Word(std::string);
 	char char_at(int i) const { return letter[i]; };
 	bool equals(const char test[6]);
-	int compute_match_type (Word testee, std::vector<Word> (&compromised_words)[243]);
+	int compute_match_type (Word testee);
 	void set_avg(double a) { avg = (float)a; };
 	double Avg() { return (double)avg; }
 	void set_sd(double s) { std_dev = (float)s; }

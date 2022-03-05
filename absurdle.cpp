@@ -40,7 +40,9 @@ int main()
         int freq_counts[245] = { 0 };
         for (Word &commoners : word_list_common) {
 
-            freq_counts[words.compute_match_type(commoners, word_list_compromised)] ++;
+            int index = words.compute_match_type(commoners);
+            word_list_compromised[index].push_back(commoners);  
+            freq_counts[index]++;
         }
         
         // Compute average for each word

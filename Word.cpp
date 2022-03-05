@@ -28,8 +28,7 @@ bool Word::equals(const char test[6]) {
 }
 
 
-int Word::compute_match_type(Word testee, std::vector<Word> (&compromised_words)[243]) {
-	Word tested = testee;
+int Word::compute_match_type(Word testee) {
 	char results[5] = { 0,0,0,0,0 };
 	// Check for correct letters in the correct position first
 	for (int i = 0; i < 5; i++) {
@@ -72,7 +71,7 @@ int Word::compute_match_type(Word testee, std::vector<Word> (&compromised_words)
 
 	}
 
-	compromised_words[index].push_back(tested);  
+
 	return index;
 }
 
