@@ -2,7 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 /VisualStudio/
-/
+/__pycache__/
 /.vs/VSWorkspaceState.json
 /.vs/Absurdle-Abs/v17/ipch/AutoPCH/644612f02ec9d823/ABSURDLE-ABS.ipch
 /.vs/Absurdle-Abs/v17/Browse.VC.db
