@@ -28,8 +28,7 @@ bool Word::equals(const char test[6]) {
 }
 
 
-int Word::compute_match_type(Word testee, std::vector<std::vector<Word> > &compromised_words) {
-	std::vector<Word> tested_words;
+int Word::compute_match_type(Word testee, std::vector<Word> (&compromised_words)[243]) {
 	Word tested = testee;
 	char results[5] = { 0,0,0,0,0 };
 	// Check for correct letters in the correct position first
@@ -64,8 +63,7 @@ int Word::compute_match_type(Word testee, std::vector<std::vector<Word> > &compr
 				
 			}
 		}
-	}
-	tested_words.push_back(tested);         
+	}       
 	
 	int index = 0;
 	int powers_of_3[5] = { 81, 27, 9, 3, 1 };
@@ -74,7 +72,7 @@ int Word::compute_match_type(Word testee, std::vector<std::vector<Word> > &compr
 
 	}
 
-	compromised_words.push_back(tested_words);  
+	compromised_words[index].push_back(tested);  
 	return index;
 }
 
