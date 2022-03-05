@@ -2,7 +2,7 @@
 #include "Word.h"
 
 
-Word::Word(std::string candidate) : std_dev(0), avg(0), min(0), min_qty(0) {
+Word::Word(std::string candidate) : std_dev(0), avg(0), index_of_largest_bucket(-1) {
 	if (candidate.length() != 5) {
 		letter[0] = (char)0;
 		return;

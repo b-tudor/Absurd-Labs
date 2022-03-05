@@ -6,10 +6,9 @@ class Word
 {
 private:
 	char   letter[5];
-	int    min;
-	int    min_qty;
-	float avg;
-	float std_dev;
+	int    index_of_largest_bucket;
+	float  avg;
+	float  std_dev;
 
 public:
 	Word(std::string);
@@ -19,6 +18,8 @@ public:
 	void set_avg(double a) { avg = (float)a; };
 	double Avg() { return (double)avg; }
 	void set_sd(double s) { std_dev = (float)s; }
+	void set_max(int i) { index_of_largest_bucket = i; }
+	int max() { return index_of_largest_bucket; }
 	double sd() { return (double) std_dev; }
 	bool operator==(const Word& w);
 	bool operator!=(const Word& w);

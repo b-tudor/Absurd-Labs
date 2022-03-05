@@ -15,7 +15,7 @@ int main()
     std::vector<Word> word_list_complete;
     std::vector<Word> word_list_common;
 
-    int min_max_index = 11700; 
+    int min_max_index = 11700;
 
 
     // Read Complete word list from file
@@ -36,86 +36,80 @@ int main()
             word_list_common.push_back(Word(line));
         }
     };
-    
-    
-    for (Word &words : word_list_complete) {
+
+
+    for (Word& words : word_list_complete) {
 
         std::vector<Word> word_list_compromised[243];
 
         int freq_counts[245] = { 0 };
-        for (Word &commoners : word_list_common) {
+        for (Word& commoners : word_list_common) {
 
             int index = words.compute_match_code(commoners);
-            word_list_compromised[index].push_back(commoners);  
+            word_list_compromised[index].push_back(commoners);
             freq_counts[index]++;
         }
-        
+
         // Compute largest match index
         int max_index = 0;
         for (int i = 0; i < 243; i++) {
-            if (freq_counts[i] > max_index){
+            if (freq_counts[i] > max_index) {
                 max_index = freq_counts[i];
             }
         }
+        words.set_max(max_index);
+
         // Compute average for each word
         double avg = 0;
         for (int i = 0; i < 243; i++) {
             avg += freq_counts[i];
         }
         avg = avg / 243.0;
-        words.set_avg( avg );
-
+        words.set_avg(avg);
 
         // Compute sd for each word
         double sd = 0;
         for (int i = 0; i < 243; i++) {
             sd += (avg - freq_counts[i]) * (avg - freq_counts[i]);
         }
-        sd = sqrt(sd/243.0);
+        sd = sqrt(sd / 243.0);
         words.set_sd(sd);
 
-        
+
 
 
         // if(words.equals("AROSE")) {
-		for (int i = 0; i < 243; i++) {
-                
+        for (int i = 0; i < 243; i++) {
+
             if (freq_counts[i]) {
 
                 std::cout << words << "[" << Word::render_match_code(i) << "]: " << freq_counts[i] << "\n";
-                if(word_list_compromised[i].size() == 1){
+
+                if (word_list_compromised[i].size() == words.max()) {
+                    
                     // Traversing of vectors word_list_compromised to print
                     std::cout << "Words at index " << i << ": ";
-                    for( auto &matched : word_list_compromised[i]) {
+                    for (auto &matched : word_list_compromised[i]) {
                         std::cout << matched << ' ';
                     }
                     std::cout << "\n";
-
-                if(word_list_compromised[i].size() == max_index){
-                        std::cout << words << "[" << Word::index_interpret(i) << "]: " << freq_counts[i] << "\n";
-                   
-                // Traversing of vectors word_list_compromised to print
-                std::cout << "Words at index " << i << ": ";
-                for (auto matched : word_list_compromised[i]) {
-                    std::cout << matched << ' ';
                 }
-                std::cout << "\n";
-                if(max_index < min_max_index){
+
+                if (max_index < min_max_index) {
                     min_max_index = max_index;
                 }
-                    
             }
         }
-    }
 
+        
+    }
 
     for (Word& words : word_list_complete) {
         std::cout << std::fixed << std::setprecision(2);
-        if (words.sd() < 25.0)
-            std::cout << words << " ... " << words.sd() << "\n";        
+        if (words.sd() < 25.0) {
+            std::cout << words << " ... " << words.sd() << "\n";
         }
     }
 
-    std::cout << "min max index:" << min_max_index << " ";
-
+    std::cout << "min max index:" << min_max_index << "\n";
 }
