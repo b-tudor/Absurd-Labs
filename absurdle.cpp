@@ -35,26 +35,12 @@ int main()
         }
     };
     
-
-
-    // Read compronised - word list from file
-    std::ifstream infile_C("absurdle-list-COMPROMISED.txt");
-    while (std::getline(infile_C, line)) {
-        std::istringstream iss(line);
-        if (line.length() == 5) {
-            word_list_compromised.push_back(Word(line));
-        }
-    };
-
-
-
-    
     
     for (Word &words : word_list_complete) {
-
+        word_list_compromised.clear();
         int freq_counts[245] = { 0 };
         for (Word &commoners : word_list_common) {
-            freq_counts[words.interrogate(commoners)] ++;
+            freq_counts[words.compute_match_type(commoners, word_list_compromised)] ++;
         }
         
         // Compute average for each word
@@ -76,52 +62,19 @@ int main()
 
         
         for (int i = 0; i < 243; i++) {
-            if(words.equals("ROATE") || words.equals("IMMIX")) {
+            //if(words.equals("AAHED")) {
                 if (freq_counts[i]) {
                     std::cout << words << "[" << Word::index_interpret(i) << "]: " << freq_counts[i] << "\n";
-                }
+                    for (int j = 0; j < word_list_compromised.size(); j++){
+                    std::cout << word_list_compromised[j] << " ";
+                    }
+                    std::cout << "\n";
+              //  }
             }
         }
     }
     
-
-    /*
-    for (Word& words : word_list_complete) {
-
-        int freq_counts[245] = { 0 };
-
-        for (Word commoners : word_list_compromised) {
-            freq_counts[words.interrogate(commoners)] ++;
-        }
-
-        // Compute average for each word
-        double avg = 0;
-        for (int i = 0; i < 243; i++) {
-            avg += freq_counts[i];
-        }
-        avg = avg / 243.0;
-        words.set_avg(avg);
-
-
-        // Compute sd for each word
-        double sd = 0;
-        for (int i = 0; i < 243; i++) {
-            sd += (avg - freq_counts[i]) * (avg - freq_counts[i]);
-        }
-        sd = sqrt(sd / 243.0);
-        words.set_sd(sd);
-
-        
-        for (int i = 0; i < 243; i++) {
-          //  if (words.equals("ROATE")) {
-                if (freq_counts[i]) {
-                    std::cout << words << "[" << Word::index_interpret(i) << "]: " << freq_counts[i] << "\n";
-                }
-            //}
-        }
-    }
-    */
-
+/*
     std::cout << "\n";
     std::cout << std::fixed << std::setprecision(3);
 
@@ -130,5 +83,5 @@ int main()
             std::cout << word << " ... " << std::setw(7) << word.sd() << "\n";
         }
     }
-            
+ */           
 }

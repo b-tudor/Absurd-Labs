@@ -15,11 +15,13 @@ public:
 	Word(std::string);
 	char char_at(int i) const { return letter[i]; };
 	bool equals(const char test[6]);
-	int interrogate( Word testee );
+	int compute_match_type (Word testee, std::vector<Word> &compromised_words );
 	void set_avg(double a) { avg = (float)a; };
 	double Avg() { return (double)avg; }
 	void set_sd(double s) { std_dev = (float)s; }
 	double sd() { return (double) std_dev; }
+	bool operator==(const Word& w);
+	bool operator!=(const Word& w);
 
 	static std::string index_interpret(int i) {
 		char result[6] = { 0 };
@@ -50,6 +52,3 @@ public:
 		return out;
 	};
 };
-
-
-
