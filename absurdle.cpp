@@ -14,7 +14,7 @@ int main()
 {
     std::vector<Word> word_list_complete;
     std::vector<Word> word_list_common;
-    std::vector<Word> word_list_compromised;
+    std::vector<std::vector<Word> > word_list_compromised;
 
     // Read Complete word list from file
     std::ifstream infile("absurdle-list-COMPLETE.txt");
@@ -37,12 +37,10 @@ int main()
     
     
     for (Word &words : word_list_complete) {
-        word_list_compromised.clear();
         int freq_counts[245] = { 0 };
         for (Word &commoners : word_list_common) {
 
             freq_counts[words.compute_match_type(commoners, word_list_compromised)] ++;
-
         }
         
         // Compute average for each word
@@ -64,18 +62,18 @@ int main()
 
         
 
-        if(words.equals("ROATE") || words.equals("IMMIX")) {
+       // if(words.equals("AROSE")) {
 			for (int i = 0; i < 243; i++) {
 
-                if (freq_counts[i]) {
+              //  if (freq_counts[i]) {
                     std::cout << words << "[" << Word::index_interpret(i) << "]: " << freq_counts[i] << "\n";
-                    for (int j = 0; j < word_list_compromised.size(); j++){
-                    std::cout << word_list_compromised[j] << " ";
+              //  }
+                for (int j = 0; j < word_list_compromised[i].size(); j++){
+                    std::cout << word_list_compromised[i][j] << " ";
                     }
                     std::cout << "\n";
-                }
             }
-        }
+        //}
     }
   
 }
