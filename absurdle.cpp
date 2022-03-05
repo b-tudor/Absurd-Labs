@@ -40,7 +40,9 @@ int main()
         word_list_compromised.clear();
         int freq_counts[245] = { 0 };
         for (Word &commoners : word_list_common) {
+
             freq_counts[words.compute_match_type(commoners, word_list_compromised)] ++;
+
         }
         
         // Compute average for each word
@@ -61,27 +63,19 @@ int main()
         words.set_sd(sd);
 
         
-        for (int i = 0; i < 243; i++) {
-            //if(words.equals("AAHED")) {
+
+        if(words.equals("ROATE") || words.equals("IMMIX")) {
+			for (int i = 0; i < 243; i++) {
+
                 if (freq_counts[i]) {
                     std::cout << words << "[" << Word::index_interpret(i) << "]: " << freq_counts[i] << "\n";
                     for (int j = 0; j < word_list_compromised.size(); j++){
                     std::cout << word_list_compromised[j] << " ";
                     }
                     std::cout << "\n";
-              //  }
+                }
             }
         }
     }
-    
-/*
-    std::cout << "\n";
-    std::cout << std::fixed << std::setprecision(3);
-
-    for (Word word : word_list_complete) {
-        if (word.sd() < 25) {
-            std::cout << word << " ... " << std::setw(7) << word.sd() << "\n";
-        }
-    }
- */           
+  
 }

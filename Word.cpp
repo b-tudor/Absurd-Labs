@@ -27,7 +27,9 @@ bool Word::equals(const char test[6]) {
 	return true;
 }
 
+
 int Word::compute_match_type(Word testee, std::vector<Word> &compromised_words) {
+
 	Word tested = testee;
 	char results[5] = { 0,0,0,0,0 };
 	
