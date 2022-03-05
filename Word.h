@@ -8,8 +8,8 @@ private:
 	char   letter[5];
 	int    min;
 	int    min_qty;
-	float avg;
-	float std_dev;
+	float  avg;
+	float  std_dev;
 
 public:
 	Word(std::string);

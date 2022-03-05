@@ -10,10 +10,7 @@ Word::Word(std::string candidate) : std_dev(0), avg(0), min(0), min_qty(0) {
 
 	for( int i=0; i<5; i++ )
 		letter[i] = candidate.c_str()[i];
-	std_dev =  0;
-	avg     = -1;
-	min     = -1;
-	min_qty = -1;
+	
 }
 
 bool Word::equals(const char test[6]) {

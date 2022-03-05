@@ -1,6 +1,7 @@
 # Python version of the Absurdle C++ Word class
 
 import copy 
+import math
 
 
 class Word:
@@ -39,7 +40,6 @@ class Word:
         return True
 
     
-
 
 
     def compute_match_type( self, testee ) -> int:
@@ -104,5 +104,33 @@ class Word:
         output = ""
         for char in self.letter:
             output += char
+
+        return output
+
+
+
+    @staticmethod
+    def index_interpret(i:int) -> str :
+
+        result = [0,0,0,0,0,0]
+        powers_of_3 = [ 81, 27, 9, 3, 1]
+
+        for p in range(5):
+            if i >= powers_of_3[p]:
+                result[p] = math.floor(i/powers_of_3[p])
+                i = i - result[p] * powers_of_3[p]
+
+        output = ""
+
+        for j in range(5):
+            if result[j] == 0 :
+                output += "."
+            elif result[j] == 1 :
+                output += "o"
+            elif result[j] == 2 :
+                output += "X"
+            else:
+               output += "%"
+                
 
         return output

@@ -1,6 +1,6 @@
 from numpy import zeros
 from math import sqrt
-import Word as w
+from word import Word
 
 
 
@@ -9,11 +9,12 @@ word_list_common      = []
 word_list_compromised = []
 
 
+
 # Read Complete word list from file
-Pythoinfile = open("absurdle-list-COMPLETE.txt", "r")
+infile = open("absurdle-list-COMPLETE.txt", "r")
 lines = infile.readlines()
 for l in lines:
-    file_word = w.Word(l)
+    file_word = Word(l)
     word_list_complete.append(file_word)
 infile.close()
 
@@ -22,7 +23,7 @@ infile.close()
 infile_B = open("absurdle-list-COMMON.txt","r")
 lines = infile_B.readlines()
 for l in lines:
-    file_word = w.Word(l)
+    file_word = Word(l)
     word_list_common.append(file_word)
 
 
@@ -30,7 +31,7 @@ for l in lines:
 infile_C = open("absurdle-list-COMPROMISED.txt", "r")
 lines = infile_C.readlines()
 for l in lines:
-    file_word = w.Word(l)
+    file_word = Word(l)
     word_list_compromised.append(file_word)
 
 
@@ -39,11 +40,6 @@ for l in lines:
 
 
 for words in word_list_complete :
-
-    if words.equals("ROATE") or words.equals("IMMIX") :
-        print( "Now is the time to shine" )
-        print( "Now is the time to shine" )
-        print( "Now is the time to shine" )
 
     freq_counts = zeros((243,),int)
 
@@ -68,8 +64,12 @@ for words in word_list_complete :
 
     if words.equals("ROATE") or words.equals("IMMIX") :
         for i in range(243):
-            #if freq_counts[i] > 0 :
-            print( words.to_str() + "["+str(i)+"]: " + str(freq_counts[i]) + "\n")
+            if freq_counts[i] > 0 :
+                print( words.to_str() + "["+Word.index_interpret(i)+"]: " + str(freq_counts[i]))
 
 
+print("\n")
 
+for words in word_list_complete:
+    if words.std_dev < 25:
+        print( words.to_str() + " ... " + str(words.std_dev))
