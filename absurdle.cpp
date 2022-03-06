@@ -42,9 +42,9 @@ int main()
     for (Word& words : word_list_complete) {
 
         // array of vectors to store all the match buckets
-        std::vector<Word> word_list_compromised[243];
+        std::vector<Word> word_list_compromised[Word::numMATCH_TYPES];
 
-        int freq_counts[243] = { 0 };
+        int freq_counts[Word::numMATCH_TYPES] = { 0 };
         for (Word& commoners : word_list_common) {
             //do the actual matching
             int index = words.compute_match_code(commoners);
@@ -56,34 +56,34 @@ int main()
         // Compute largest match index
         int max_index = 0;
         int max_word_count = 0;
-        for (int i = 0; i < 243; i++) {
+        for (int i = 0; i < Word::numMATCH_TYPES; i++) {
             if (freq_counts[i] > max_word_count) {
                 max_word_count = freq_counts[i];
                 max_index = i;
             }
         }
-        words.set_max(max_index);
+        words.set_maxIdx(max_index);
 
         // Compute average for each word
         double avg = 0;
-        for (int i = 0; i < 243; i++) {
+        for (int i = 0; i < Word::numMATCH_TYPES; i++) {
             avg += freq_counts[i];
         }
-        avg = avg / 243.0;
+        avg = avg / (double) Word::numMATCH_TYPES;
         words.set_avg(avg);
 
         // Compute sd for each word
         double sd = 0;
-        for (int i = 0; i < 243; i++) {
+        for (int i = 0; i < Word::numMATCH_TYPES; i++) {
             sd += (avg - freq_counts[i]) * (avg - freq_counts[i]);
         }
-        sd = sqrt(sd / 243.0);
+        sd = sqrt(sd / (double) Word::numMATCH_TYPES );
         words.set_sd(sd);
 
 
         if (max_word_count <= min_max_word_count) {
                 second_round_list.clear();
-            for (int i = 0; i < 243; i++) {
+            for (int i = 0; i < Word::numMATCH_TYPES; i++) {
             
                 if (i == max_index) {
                     std::cout << words << "[" << Word::render_match_code(i) << "]: " 
