@@ -4,25 +4,40 @@
 
 class Word
 {
+public:
+
+	// Total number of ways an arbitrary guess can reveal info about any given answer.
+	static const int numMATCH_TYPES = 3*3*3*3*3;
+
 private:
 	char   letter[5];
 	int    index_of_largest_bucket;
-	float  avg;
+	float  average;
 	float  std_dev;
 
 public:
+
 	Word(std::string);
-	char char_at(int i) const { return letter[i]; };
-	bool equals(const char test[6]);
+
+	// Getters/Setters
+	char   char_at    (int i   ) const { return letter[i]; };
+	void   set_sd     (double s)       { std_dev = (float)s; }
+	double sd         (        ) const { return (double)std_dev; }
+	void   set_maxIdx (int i   )       { index_of_largest_bucket = i; }
+	int    maxIdx     (        ) const { return index_of_largest_bucket; }
+	void   set_avg    (double a)       { average = (float)a; };
+	double avg        (        ) const { return (double) average; }
+
+	// Utility functions
 	int compute_match_code (Word testee);
-	void set_avg(double a) { avg = (float)a; };
-	double Avg() { return (double)avg; }
-	void set_sd(double s) { std_dev = (float)s; }
-	void set_max(int i) { index_of_largest_bucket = i; }
-	int max() { return index_of_largest_bucket; }
-	double sd() { return (double) std_dev; }
-	bool operator==(const Word& w);
-	bool operator!=(const Word& w);
+
+	// operators
+	Word& operator=(const Word& w);
+	bool operator==(const Word& w) const;
+	bool operator!=(const Word& w) const;
+	bool operator==(const char test[6]) const; // equality vs string literals
+	bool operator!=(const char test[6]) const; 
+	
 
 	static std::string render_match_code(int i) {
 		char result[6] = { 0 };

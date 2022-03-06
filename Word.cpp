@@ -2,7 +2,7 @@
 #include "Word.h"
 
 
-Word::Word(std::string candidate) : std_dev(0), avg(0), index_of_largest_bucket(-1) {
+Word::Word(std::string candidate) : std_dev(0), average(0), index_of_largest_bucket(0) {
 	if (candidate.length() != 5) {
 		letter[0] = (char)0;
 		return;
@@ -10,17 +10,6 @@ Word::Word(std::string candidate) : std_dev(0), avg(0), index_of_largest_bucket(
 
 	for( int i=0; i<5; i++ )
 		letter[i] = candidate.c_str()[i];
-}
-
-bool Word::equals(const char test[6]) {
-	for (int i = 0; i < 5; i++)
-		if (this->char_at(i) != test[i])
-			return false;
-
-	if (test[5])
-		return false;
-
-	return true;
 }
 
 
@@ -37,14 +26,14 @@ int Word::compute_match_code(Word testee) {
 	}
 
 
-	for (int i = 0; i < 5; i++) {
+	for (int i=0; i<5; i++) {
 
 		// If we have a value in this position already, then this letter
 		// has already been 'consumed'.
 		if (results[i] > 0)
 			continue;
 
-		for (int j = 0; j < 5; j++) {
+		for (int j=0; j<5; j++) {
 
 			// We already checked this case (good letter in correct position)
 			if (i == j)
@@ -64,19 +53,48 @@ int Word::compute_match_code(Word testee) {
 	int powers_of_3[5] = { 81, 27, 9, 3, 1 };
 	for (int i = 0; i < 5; i++) {
 		index += results[i] * powers_of_3[i];
-
 	}
-
 
 	return index;
 }
 
-bool Word::operator==(const Word& w) {
+
+
+
+
+Word& Word::operator=(const Word& w) {
+	for (int i = 0; i < 5; i++) {
+		this->letter[i] = w.letter[i];
+		this->index_of_largest_bucket = w.index_of_largest_bucket;
+		this->average = w.average;
+		this->std_dev = w.std_dev;
+	}
+	return *this;
+}
+
+bool Word::operator==(const Word& w) const {
 	for (int i = 0; i < 5; i++)
 		if ((this->letter[i] | 0x10) != (w.letter[i] | 0x10))
 			return false;
 	return true;
 }
-bool Word::operator!=(const Word& w) {
+
+bool Word::operator!=(const Word& w) const {
 	return !(*this == w);
+}
+
+// Test for equality against string literals
+bool Word::operator==(const char test[6]) const {
+	for (int i = 0; i < 5; i++)
+		if (this->char_at(i) != test[i])
+			return false;
+
+	if (test[5])
+		return false;
+
+	return true;
+}
+
+bool Word::operator!=(const char test[6]) const {
+	return !(*this == test);
 }
