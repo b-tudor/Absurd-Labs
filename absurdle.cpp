@@ -16,7 +16,7 @@ int main()
     std::vector<Word> word_list_common;
 
     int min_max_index = 11700;
-
+    std::cout << "min max index:" << min_max_index << "\n";
 
     // Read Complete word list from file
     std::ifstream infile("absurdle-list-COMPLETE.txt");
@@ -52,9 +52,11 @@ int main()
 
         // Compute largest match index
         int max_index = 0;
+        int max = 0;
         for (int i = 0; i < 243; i++) {
-            if (freq_counts[i] > max_index) {
-                max_index = freq_counts[i];
+            if (freq_counts[i] > max) {
+                max = freq_counts[i];
+                max_index = i;
             }
         }
         words.set_max(max_index);
@@ -81,11 +83,11 @@ int main()
         // if(words.equals("AROSE")) {
         for (int i = 0; i < 243; i++) {
 
-            if (freq_counts[i]) {
+            if (freq_counts[i] == max) {
 
                 std::cout << words << "[" << Word::render_match_code(i) << "]: " << freq_counts[i] << "\n";
 
-                if (word_list_compromised[i].size() == words.max()) {
+                if ( i == words.max()) {
                     
                     // Traversing of vectors word_list_compromised to print
                     std::cout << "Words at index " << i << ": ";
@@ -95,13 +97,12 @@ int main()
                     std::cout << "\n";
                 }
 
-                if (max_index < min_max_index) {
-                    min_max_index = max_index;
+                if (max < min_max_index) {
+                    min_max_index = max;
                 }
+                std::cout << "min max index:" << min_max_index << "\n";
             }
         }
-
-        
     }
 
     for (Word& words : word_list_complete) {
@@ -110,6 +111,4 @@ int main()
             std::cout << words << " ... " << words.sd() << "\n";
         }
     }
-
-    std::cout << "min max index:" << min_max_index << "\n";
 }
