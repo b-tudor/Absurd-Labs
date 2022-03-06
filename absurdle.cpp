@@ -14,9 +14,10 @@ int main()
 {
     std::vector<Word> word_list_complete;
     std::vector<Word> word_list_common;
+    std::vector<Word> second_round_list;
 
     int min_max_word_count = 11700;
-    std::cout << "min max word count:" << min_max_word_count << "\n";
+
 
     // Read Complete word list from file
     std::ifstream infile("absurdle-list-COMPLETE.txt");
@@ -37,15 +38,17 @@ int main()
         }
     };
 
-
+    // Do all the work
     for (Word& words : word_list_complete) {
 
+        // array of vectors to store all the match buckets
         std::vector<Word> word_list_compromised[243];
 
-        int freq_counts[245] = { 0 };
+        int freq_counts[243] = { 0 };
         for (Word& commoners : word_list_common) {
-
+            //do the actual matching
             int index = words.compute_match_code(commoners);
+            //store the matched words for later
             word_list_compromised[index].push_back(commoners);
             freq_counts[index]++;
         }
@@ -78,33 +81,35 @@ int main()
         words.set_sd(sd);
 
 
-        // if(words.equals("AROSE")) {
         if (max_word_count <= min_max_word_count) {
+                second_round_list.clear();
             for (int i = 0; i < 243; i++) {
-
-                if (i == max_index) { 
-                    std::cout << words << "[" << Word::render_match_code(i) << "]: " << freq_counts[i] << "\n";
+            
+                if (i == max_index) {
+                    std::cout << words << "[" << Word::render_match_code(i) << "]: " 
+                    << freq_counts[i] << "\n";
                     // Traversing of vectors word_list_compromised to print
                     std::cout << "Words at index " << i << ": ";
                         for (auto &matched : word_list_compromised[i]) {
+                            second_round_list.push_back(matched);
                             std::cout << matched << ' ';
                         }
                     std::cout << "\n";
-                    
+
                     //setting the min max word count
                     if (max_word_count < min_max_word_count) {
                         min_max_word_count = max_word_count;
                     }
-                   // std::cout << "min max:" << min_max_word_count << "\n";
                 }
             }
         }
     }
 
-    for (Word& words : word_list_complete) {
-        std::cout << std::fixed << std::setprecision(2);
-        if (words.sd() < 22.9) {
-            std::cout << words << " ... " << words.sd() << "\n";
-        }
+    // Test the secound round list
+    std::cout << "Second Round List: ";
+    std::cout << "size of second list " << second_round_list.size() << "\n";
+    for (auto &entry : second_round_list) {
+        std::cout << entry << ' ';
     }
+    std::cout << "\n Done";
 }
