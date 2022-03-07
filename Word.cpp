@@ -1,16 +1,35 @@
-#include <vector>
 #include "Word.h"
 
 
 Word::Word(std::string candidate) : std_dev(0), average(0), index_of_largest_bucket(0) {
 	if (candidate.length() != 5) {
-		letter[0] = (char)0;
+		letter = nullptr;
 		return;
 	}
-
+	letter = new char[5];
 	for( int i=0; i<5; i++ )
 		letter[i] = candidate.c_str()[i];
 }
+
+Word::Word(const Word& w): average(w.average), std_dev(w.std_dev), index_of_largest_bucket(w.index_of_largest_bucket) {
+	letter = new char[5];
+	for (int i = 0; i < 5; i++) 
+		this->letter[i] = w.letter[i];
+}
+
+Word::~Word() {	delete letter; }
+
+
+
+
+
+Word& Word::operator=(Word w) {
+	swap(*this, w);
+	return *this;
+}
+
+
+
 
 
 int Word::compute_match_code(Word testee) {
@@ -62,22 +81,13 @@ int Word::compute_match_code(Word testee) {
 
 
 
-Word& Word::operator=(const Word& w) {
-	for (int i = 0; i < 5; i++) {
-		this->letter[i] = w.letter[i];
-		this->index_of_largest_bucket = w.index_of_largest_bucket;
-		this->average = w.average;
-		this->std_dev = w.std_dev;
-	}
-	return *this;
-}
-
 bool Word::operator==(const Word& w) const {
 	for (int i = 0; i < 5; i++)
 		if ((this->letter[i] | 0x10) != (w.letter[i] | 0x10))
 			return false;
 	return true;
 }
+
 
 bool Word::operator!=(const Word& w) const {
 	return !(*this == w);
@@ -94,6 +104,7 @@ bool Word::operator==(const char test[6]) const {
 
 	return true;
 }
+
 
 bool Word::operator!=(const char test[6]) const {
 	return !(*this == test);
