@@ -1,7 +1,7 @@
 #include "Word.h"
 
 
-Word::Word(std::string candidate) : std_dev(0), average(0), index_of_largest_bucket(0) {
+Word::Word(std::string candidate) : std_dev(0), index_of_largest_bucket(0) {
 	if (candidate.length() != 5) {
 		letter = nullptr;
 		return;
@@ -11,7 +11,7 @@ Word::Word(std::string candidate) : std_dev(0), average(0), index_of_largest_buc
 		letter[i] = candidate.c_str()[i];
 }
 
-Word::Word(const Word& w): average(w.average), std_dev(w.std_dev), index_of_largest_bucket(w.index_of_largest_bucket) {
+Word::Word(const Word& w): std_dev(w.std_dev), index_of_largest_bucket(w.index_of_largest_bucket) {
 	letter = new char[5];
 	for (int i = 0; i < 5; i++) 
 		this->letter[i] = w.letter[i];

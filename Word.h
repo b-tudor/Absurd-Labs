@@ -12,7 +12,7 @@ public:
 private:
 	char   *letter;
 	int    index_of_largest_bucket;
-	float  average;
+	//float  average;
 	float  std_dev;
 
 public:
@@ -23,12 +23,12 @@ public:
 
 	// Getters/Setters
 	char   char_at    (int i   ) const { return letter[i]; };
-	void   set_sd     (double s)       { std_dev = (float)s; }
-	double sd         (        ) const { return (double)std_dev; }
+	//void   set_sd     (double s)       { std_dev = (float)s; }
+	//double sd         (        ) const { return (double)std_dev; }
 	void   set_maxIdx (int i   )       { index_of_largest_bucket = i; }
 	int    max_Index     (        ) const { return index_of_largest_bucket; }
-	void   set_avg    (double a)       { average = (float)a; };
-	double avg        (        ) const { return (double) average; }
+	//void   set_avg    (double a)       { average = (float)a; };
+	//double avg        (        ) const { return (double) average; }
 
 	// Utility functions
 	int compute_match_code (Word testee);
@@ -86,9 +86,9 @@ public:
 		w1.index_of_largest_bucket = w2.index_of_largest_bucket;
 		w2.index_of_largest_bucket = temp.ints;
 
-		temp.floats = w1.average;
+		/*temp.floats = w1.average;
 		w1.average = w2.average;
-		w2.average = temp.floats;
+		w2.average = temp.floats;*/
 
 		temp.floats = w1.std_dev;
 		w1.std_dev = w2.std_dev;
