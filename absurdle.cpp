@@ -270,20 +270,21 @@ int main()
 
 void do_the_thing(std::vector<Word>& list_of_attempt_words, std::vector<Word>& answer_pool, std::vector<Word>& guess_chain )
 {
-    static int best_answer_size = 100;
+    const int KEEPER_COUNT = 25;
+    static int word_count_of_best_answer__so_far = 3;
     
     // RECURSIVE EXIT CONDITIONS
     ///////////////////////////////////////////////////////////////////////////////////////////////
     
     // If the answer would be worse than what we have discovered so far,
     // then we abandon this line of inquiry.
-    if (guess_chain.size() > best_answer_size)
+    if (guess_chain.size() > word_count_of_best_answer__so_far)
         return;
 
     // If we found a winner,  spit it out
     if(answer_pool.size() == 1) {
-        if (guess_chain.size() <= best_answer_size) {
-            best_answer_size = guess_chain.size();
+        if (guess_chain.size() <= word_count_of_best_answer__so_far) {
+            word_count_of_best_answer__so_far = guess_chain.size();
             std::cout << "WINNER WINNER, CHICKEN DINNER! -  ";
             for (auto& w : guess_chain)
                 std::cout << w << " ";
@@ -301,7 +302,7 @@ void do_the_thing(std::vector<Word>& list_of_attempt_words, std::vector<Word>& a
 
 
     // We will keep and examine the top keeper_count guesses
-    const int KEEPER_COUNT = 3;
+    
     typedef struct __SD_data {
         double SD    = 0;
         int    index = 0;
@@ -375,18 +376,30 @@ void do_the_thing(std::vector<Word>& list_of_attempt_words, std::vector<Word>& a
     for( int i=0; i<KEEPER_COUNT; i++ ) {
         
         Word guess = list_of_attempt_words[best_Guesses[i].index];
-        
+        //Word guess = std::string("TESTY");
         guess_chain.push_back( guess ); 
         
-        // Build the word bucket for this guess
+        /*/ Build the word bucket for this guess 
         std::vector<Word> word_bucket;        
         for (Word& potential_answer : answer_pool) {
             int matchTypeIdx = guess.compute_match_code( potential_answer );
             if (matchTypeIdx == guess.max_Index())
                 word_bucket.push_back(potential_answer);
-        }
+        }*/
         
-        do_the_thing( list_of_attempt_words, word_bucket, guess_chain);
+        std::vector<Word> word_bucket[Word::numMATCH_TYPES];
+        for (Word& potential_answer : answer_pool) {
+            int matchTypeIdx = guess.compute_match_code(potential_answer);
+            word_bucket[matchTypeIdx].push_back(potential_answer);
+        }
+        int max_bucket = 0;
+        int max_bucket_size = 0;
+        for(int i=0; i<Word::numMATCH_TYPES; i++ )
+            if (word_bucket[i].size() > max_bucket_size) {
+                max_bucket_size = word_bucket[i].size();
+                max_bucket = i;
+            }
+        do_the_thing( list_of_attempt_words, word_bucket[max_bucket], guess_chain);
      
         // Take this guess off the guess chain and try the next best guess...
         guess_chain.pop_back();
