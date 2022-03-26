@@ -11,7 +11,7 @@
 #include "Word.h"
 
 
-void do_the_thing(std::vector<Word>& guesses, std::vector<Word>& answer_pool, std::vector<Word> &guess_chain);
+void do_the_thing(std::vector<Word>& guesses, std::vector<Word>& answer_pool, std::vector<Word> &guess_chain, std::ofstream& oFile, int level, int current_top_level_progress);
 
 
 
@@ -50,10 +50,23 @@ int main()
     // --------------------------------------------------------------------------------------------
 
 
+    // Open the output file
+    const std::string outfileName("output.txt");
+
+    std::ofstream outFile(outfileName);
+    if (outFile.is_open()) {
+        // Search for answers!
+        std::cout << "Writing output to: " << outfileName << std::endl;
+        do_the_thing(list_of_attempt_words, list_of_answer_set_words, guess_chain, outFile, 0, 0);
+    }
+    else {
+        std::cout << "Failed to open output file: " << outfileName << "\n.Exiting..." << std::endl;
+    }
+
 
     
-    // Search for answers!
-    do_the_thing( list_of_attempt_words, list_of_answer_set_words, guess_chain );
+    outFile.close();
+    std::cout << "Output file closed.\n";
     std::cout << "\n Done";
 
     return 0;
@@ -64,9 +77,13 @@ int main()
 
 
 
-void do_the_thing(std::vector<Word>& list_of_attempt_words, std::vector<Word>& answer_pool, std::vector<Word>& guess_chain )
+void do_the_thing(std::vector<Word>& list_of_attempt_words, std::vector<Word>& answer_pool, std::vector<Word>& guess_chain, std::ofstream& oFile, int level, int current_top_level_progress )
 {
-    const int KEEPER_COUNT = 25;
+    constexpr int KEEPER_COUNT = 25;
+    constexpr double INCREMENT = 1.0 / (double) KEEPER_COUNT;
+    
+    int TLP = 0; // Top level progress indicator (progress in original parent instance)
+    
     static int word_count_of_best_answer__so_far = 3;
     
     // RECURSIVE EXIT CONDITIONS
@@ -80,12 +97,13 @@ void do_the_thing(std::vector<Word>& list_of_attempt_words, std::vector<Word>& a
     // If we found a winner,  spit it out
     if(answer_pool.size() == 1) {
         if (guess_chain.size() <= word_count_of_best_answer__so_far) {
-            word_count_of_best_answer__so_far = guess_chain.size();
-            std::cout << "WINNER WINNER, CHICKEN DINNER! -  ";
-            for (auto& w : guess_chain)
+            word_count_of_best_answer__so_far = (int) guess_chain.size();
+            for (auto& w : guess_chain) {
+                oFile << w << " ";
                 std::cout << w << " ";
-            std::cout << answer_pool[0];
-            std::cout << "\n";
+            }
+            oFile << answer_pool[0] << "\n";
+            std::cout << answer_pool[0] << "\n";
         }
         return;
     }
@@ -170,6 +188,31 @@ void do_the_thing(std::vector<Word>& list_of_attempt_words, std::vector<Word>& a
     // else we dig deeper!
     
     for( int i=0; i<KEEPER_COUNT; i++ ) {
+
+        // If we are at the base level, we set the top level progress indicator. If we are one
+        // of the child instances, we use what was passed to us (i.e. current_top_level_progress)
+        TLP = (level) ? current_top_level_progress : i;
+        double glob_prog = 0;
+        double local_prog = 0;
+
+        switch (level) {
+            case 0:
+                std::cout << "\rProgress: " << std::fixed << std::setprecision(3) << 100.0 * (double)i / (double)KEEPER_COUNT << "%           ";
+                break;
+            case 1:
+                glob_prog  = current_top_level_progress * INCREMENT;
+                local_prog = i * INCREMENT / (double) KEEPER_COUNT;
+                std::cout << "\rProgress: " << std::fixed << std::setprecision(3) << 100.0 * (glob_prog + local_prog) << "%           ";
+                break;
+            default:
+                // Do nothing... only report progress at levels 1 & 2
+                break;
+        }
+            
+
+        
+        
+        
         
         Word guess = list_of_attempt_words[best_Guesses[i].index];
         //Word guess = std::string("TESTY");
@@ -192,12 +235,16 @@ void do_the_thing(std::vector<Word>& list_of_attempt_words, std::vector<Word>& a
         int max_bucket_size = 0;
         for(int i=0; i<Word::numMATCH_TYPES; i++ )
             if (word_bucket[i].size() > max_bucket_size) {
-                max_bucket_size = word_bucket[i].size();
+                max_bucket_size = (int) word_bucket[i].size();
                 max_bucket = i;
             }
-        do_the_thing( list_of_attempt_words, word_bucket[max_bucket], guess_chain);
+        
+        do_the_thing( list_of_attempt_words, word_bucket[max_bucket], guess_chain, oFile, level+1, TLP );
      
         // Take this guess off the guess chain and try the next best guess...
         guess_chain.pop_back();
     }
+
+    if (!level)
+        std::cout << "\rProgress: 100.000%            \n";
 }
