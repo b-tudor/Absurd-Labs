@@ -100,10 +100,8 @@ void do_the_thing(std::vector<Word>& list_of_attempt_words, std::vector<Word>& a
             word_count_of_best_answer__so_far = (int) guess_chain.size();
             for (auto& w : guess_chain) {
                 oFile << w << " ";
-                std::cout << w << " ";
             }
-            oFile << answer_pool[0] << "\n";
-            std::cout << answer_pool[0] << "\n";
+            oFile << answer_pool[0] << std::endl;
         }
         return;
     }
